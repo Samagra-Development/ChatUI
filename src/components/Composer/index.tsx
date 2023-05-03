@@ -34,6 +34,8 @@ export type ComposerProps = {
   onToolbarClick?: (item: ToolbarItemProps, event: React.MouseEvent) => void;
   onAccessoryToggle?: (isAccessoryOpen: boolean) => void;
   rightAction?: IconButtonProps;
+  disableSend:boolean;
+  btnColor:string;
 };
 
 export interface ComposerHandle {
@@ -53,12 +55,14 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
     onBlur,
     onChange,
     onSend,
+    disableSend=false,
     onImageSend,
     onAccessoryToggle,
     toolbar = [],
     onToolbarClick,
     rightAction,
     inputOptions,
+    btnColor,
   } = props;
 
   const [text, setText] = useState(initialText);
@@ -146,7 +150,7 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
   const handleInputFocus = useCallback(
     (e: React.FocusEvent<HTMLTextAreaElement>) => {
       clearTimeout(blurTimer.current);
-      toggleClass(CLASS_NAME_FOCUSING, true);
+      toggleClass(CLASS_NAME_FOCUSING, false);
       focused.current = true;
 
       if (onFocus) {
@@ -275,10 +279,12 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
             {accessoryContent}
           </Popover>
         )}
-        <div className="Composer-inputWrap">
-          <ComposerInput invisible={false} {...inputProps} />
+        <div>
+        <div className="Composer-inputWrap" style={{border: `2px solid ${btnColor}`, borderRadius: '12px'}}>
+          <ComposerInput invisible={false} {...inputProps} disabled={disableSend} />
         </div>
-        <SendButton onClick={handleSendBtnClick} disabled={!text} />
+        <SendButton btnColor={btnColor} onClick={handleSendBtnClick} disabled={!text || disableSend} />
+        </div>
       </div>
     );
   }
@@ -292,11 +298,11 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
             data-icon={inputTypeIcon}
             icon={inputTypeIcon}
             onClick={handleInputTypeChange}
-            aria-label={isInputText ? '切换到语音输入' : '切换到键盘输入'}
+            aria-label={isInputText ? 'Switch to voice input' : 'Switch to keyboard input'}
           />
         )}
-        <div className="Composer-inputWrap">
-          <ComposerInput invisible={!isInputText} {...inputProps} />
+        <div className="Composer-inputWrap" style={{border: `2px solid ${btnColor}`, borderRadius: '12px'}}>
+      <ComposerInput invisible={!isInputText} {...inputProps} disabled={disableSend} />
           {!isInputText && <Recorder {...recorder} />}
         </div>
         {!text && rightAction && <Action {...rightAction} />}
@@ -307,10 +313,10 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
             })}
             icon="plus-circle"
             onClick={handleAccessoryToggle}
-            aria-label={isAccessoryOpen ? '关闭工具栏' : '展开工具栏'}
+            aria-label={isAccessoryOpen ? 'Close Toolbar' : 'Expand Toolbar'}
           />
         )}
-        {(text || textOnce) && <SendButton onClick={handleSendBtnClick} disabled={false} />}
+        {(text || textOnce ) && <SendButton btnColor={btnColor} onClick={handleSendBtnClick} disabled={disableSend} />}
       </div>
       {isAccessoryOpen && (
         <AccessoryWrap onClickOutside={handleAccessoryBlur}>

@@ -18,6 +18,7 @@ export const ComposerInput = ({
   inputRef,
   invisible,
   onImageSend,
+  disabled,
   ...rest
 }: ComposerInputProps) => {
   const [pastedImage, setPastedImage] = useState<File | null>(null);
@@ -47,13 +48,14 @@ export const ComposerInput = ({
 
   return (
     <div className={clsx({ 'S--invisible': invisible })}>
-      <Input
+     <Input
         className="Composer-input"
         rows={1}
         autoSize
         enterKeyHint="send"
         onPaste={onImageSend ? handlePaste : undefined}
         ref={inputRef}
+        disabled={disabled}
         {...rest}
       />
       {pastedImage && (

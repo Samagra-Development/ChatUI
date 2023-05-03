@@ -1,28 +1,14 @@
 <h1 align="center">
-  <a href="https://chatui.io/">
     <img width="109" height="28" src="https://gw.alicdn.com/tfs/TB1uYH4QoY1gK0jSZFMXXaWcVXa-218-56.svg" alt="ChatUI">
-  </a>
 </h1>
 
 <p align="center">The UI design language and React library for Conversational UI</p>
 
-<p align="center">Website：<a href="https://chatui.io/" target="_blank">https://chatui.io</a></p>
-
 <div align="center">
 
-[![LICENSE](https://img.shields.io/npm/l/@chatui/core?style=flat-square)](https://github.com/alibaba/ChatUI/blob/master/LICENSE)
-[![NPM version](https://img.shields.io/npm/v/@chatui/core?style=flat-square)](https://www.npmjs.com/package/@chatui/core)
-[![NPM downloads](https://img.shields.io/npm/dm/@chatui/core?style=flat-square)](https://www.npmjs.com/package/@chatui/core)
-[![Gzip Size](https://img.badgesize.io/https://unpkg.com/@chatui/core@0.1.0/dist/index.js?compression=gzip)](https://unpkg.com/@chatui/core@0.1.0/dist/index.js)
-[![Jsdelivr Hits](https://img.shields.io/jsdelivr/npm/hm/@chatui/core?style=flat-square)](https://cdn.jsdelivr.net/npm/@chatui/core)
+[![LICENSE](https://img.shields.io/npm/l/samagra-chatui?style=flat-square)](https://github.com/alibaba/ChatUI/blob/master/LICENSE) [![NPM version](https://img.shields.io/npm/v/samagra-chatui?style=flat-square)](https://www.npmjs.com/package/samagra-chatui)
 
 </div>
-
-<p align="center">
-  <img width="750" src="https://gw.alicdn.com/tfs/TB1WTl.lQ9l0K4jSZFKXXXFjpXa-1500-833.jpg">
-</p>
-
-English | [简体中文](./README.zh-CN.md)
 
 ## Features
 
@@ -45,18 +31,18 @@ English | [简体中文](./README.zh-CN.md)
 ## Install
 
 ```bash
-npm install @chatui/core --save
+npm install samagra-chatui --save
 ```
 
 ```bash
-yarn add @chatui/core
+yarn add samagra-chatui
 ```
 
 ## Usage
 
 ```jsx
-import Chat, { Bubble, useMessages } from '@chatui/core';
-import '@chatui/core/dist/index.css';
+import Chat, { Bubble, useMessages } from 'samagra-chatui';
+import 'samagra-chatui/dist/index.css';
 
 const App = () => {
   const { messages, appendMsg, setTyping } = useMessages([]);
@@ -105,18 +91,6 @@ cd storybook
 npm i
 npm run storybook
 ```
-
-## Theme
-
-Visit [Customize Theme](https://chatui.io/docs/customize-theme) for detail
-
-## Internationalization
-
-Visit [i18n](https://chatui.io/docs/i18n) for detail
-
-## Discussion
-
-<img width="400" height="515" src="https://img.alicdn.com/imgextra/i2/O1CN01yO0rNg1ZDKHKIulc8_!!6000000003160-0-tps-828-1068.jpg">
 
 ## License
 

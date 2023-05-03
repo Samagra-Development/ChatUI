@@ -139,7 +139,10 @@ export type ChatProps = Omit<ComposerProps, 'onFocus' | 'onChange' | 'onBlur'> &
     /**
      * 输入组件
      */
-    Composer?: React.ElementType; // FIXME
+    Composer?: React.ElementType; // FIXME,
+    disableSend?:boolean
+    btnColor?:string
+    background?:string
   };
 
 export const Chat = React.forwardRef<HTMLDivElement, ChatProps>((props, ref) => {
@@ -170,6 +173,9 @@ export const Chat = React.forwardRef<HTMLDivElement, ChatProps>((props, ref) => 
     onInputChange,
     onInputBlur,
     onSend,
+    disableSend,
+    btnColor,
+    background,
     onImageSend,
     inputOptions,
     composerRef,
@@ -207,7 +213,7 @@ export const Chat = React.forwardRef<HTMLDivElement, ChatProps>((props, ref) => 
 
   return (
     <LocaleProvider locale={locale} locales={locales}>
-      <div className="ChatApp" ref={ref}>
+      <div className="ChatApp" ref={ref} style={{background: background ? background : ''}}>
         {renderNavbar ? renderNavbar() : navbar && <Navbar {...navbar} />}
         <MessageContainer
           ref={messagesRef}
@@ -220,7 +226,7 @@ export const Chat = React.forwardRef<HTMLDivElement, ChatProps>((props, ref) => 
           onBackBottomShow={onBackBottomShow}
           onBackBottomClick={onBackBottomClick}
         />
-        <div className="ChatFooter">
+        <div className="ChatFooter" style={{background: background ? background : ''}}>
           {renderQuickReplies ? (
             renderQuickReplies()
           ) : (
@@ -248,6 +254,8 @@ export const Chat = React.forwardRef<HTMLDivElement, ChatProps>((props, ref) => 
             onChange={onInputChange}
             onBlur={onInputBlur}
             onSend={onSend}
+            disableSend={disableSend}
+            btnColor={btnColor}
             onImageSend={onImageSend}
             rightAction={rightAction}
           />
