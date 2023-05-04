@@ -28,7 +28,7 @@ describe('<MediaObject />', () => {
 
   it('should support meta', () => {
     const title = 'Hello ChatUI';
-    const meta = <a href="https://github.com/alibaba/chatui">Hello ChatUI</a>;
+    const meta = <a href="https://github.com/Samagra-Development/ChatUI">Hello ChatUI</a>;
     const picUrl = '//img.alicdn.com/tfs/TB1KwnKPqL7gK0jSZFBXXXZZpXa-221-57.svg';
     const { container } = render(<MediaObject
       title={title}

@@ -6,7 +6,7 @@
 
 <div align="center">
 
-[![LICENSE](https://img.shields.io/npm/l/samagra-chatui?style=flat-square)](https://github.com/alibaba/ChatUI/blob/master/LICENSE) [![NPM version](https://img.shields.io/npm/v/samagra-chatui?style=flat-square)](https://www.npmjs.com/package/samagra-chatui)
+[![LICENSE](https://img.shields.io/npm/l/samagra-chatui?style=flat-square)](https://github.com/Samagra-Development/ChatUI/blob/next/LICENSE) [![NPM version](https://img.shields.io/npm/v/samagra-chatui?style=flat-square)](https://www.npmjs.com/package/samagra-chatui)
 
 </div>
 
