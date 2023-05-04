@@ -100,7 +100,10 @@
     "chat",
     "chat-ui"
   ],
-  "homepage": "https://chatui.io/",
+  "homepage": "",
+  "bugs": {
+    "url": "https://github.com/Samagra-Development/ChatUI"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/Samagra-Development/chatui"
