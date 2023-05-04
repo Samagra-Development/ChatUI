@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, cleanup } from '@testing-library/react';
-import { LocaleProvider } from '../../LocaleProvider/';
+import { LocaleProvider } from '../../LocaleProvider';
 import locales from '../../LocaleProvider/locales';
 
 import { Message } from '..';
