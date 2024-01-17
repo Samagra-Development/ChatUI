@@ -1,6 +1,6 @@
 {
-  "name": "samagra-chatui",
-  "version": "1.0.4",
+  "name": "@samagra-x/chatui",
+  "version": "1.0.1",
   "description": "The React library for Chatbot UI",
   "main": "lib/index.js",
   "module": "es/index.js",
