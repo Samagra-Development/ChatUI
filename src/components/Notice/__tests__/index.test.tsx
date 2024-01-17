@@ -17,7 +17,7 @@ afterEach(() => {
 describe('<Notice />', () => {
   it('should support link click', () => {
     const content = 'Hello ChatUI';
-    const url = 'https://github.com/Samagra-Development/ChatUI';
+    const url = 'https://github.com/alibaba/chatui';
     const onLinkClick = jest.fn();
     const { getByText } = render(<Notice content={content} url={url} onLinkClick={onLinkClick} />);
     fireEvent.click(getByText(content));

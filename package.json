@@ -1,6 +1,6 @@
 {
-  "name": "@chatui/core",
-  "version": "2.4.8-beta.0",
+  "name": "samagra-chatui",
+  "version": "1.0.4",
   "description": "The React library for Chatbot UI",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -102,12 +102,12 @@
   ],
   "homepage": "",
   "bugs": {
-    "url": "https://github.com/Samagra-Development/ChatUI"
+    "url": "https://github.com/Samagra-Development/ChatUI/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Samagra-Development/chatui"
+    "url": "https://github.com/Samagra-Development/ChatUI"
   },
-  "author": "akai <akainice@gmail.com>",
+  "author": "samaga <>",
   "license": "MIT"
 }

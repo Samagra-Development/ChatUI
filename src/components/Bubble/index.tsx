@@ -2,7 +2,7 @@ import React from 'react';
 
 export interface BubbleProps extends React.HTMLAttributes<HTMLDivElement> {
   type?: string;
-  content?: React.ReactNode;
+  content?: any;
 }
 
 export const Bubble = (props: BubbleProps) => {
