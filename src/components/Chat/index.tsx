@@ -146,7 +146,6 @@ export type ChatProps = Omit<ComposerProps, 'onFocus' | 'onChange' | 'onBlur'> &
     btnColor?:string
     background?:string
     showTransliteration?:boolean
-    translation?:any
   };
 
 export const Chat = React.forwardRef<HTMLDivElement, ChatProps>((props, ref) => {
@@ -181,7 +180,6 @@ export const Chat = React.forwardRef<HTMLDivElement, ChatProps>((props, ref) => 
     onSend,
     disableSend,
     showTransliteration,
-    translation,
     btnColor,
     background,
     onImageSend,
@@ -267,7 +265,6 @@ export const Chat = React.forwardRef<HTMLDivElement, ChatProps>((props, ref) => 
             onSend={onSend}
             disableSend={disableSend}
             showTransliteration={showTransliteration}
-            translation={translation}
             btnColor={btnColor}
             onImageSend={onImageSend}
             rightAction={rightAction}
