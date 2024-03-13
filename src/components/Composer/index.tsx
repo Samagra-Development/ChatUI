@@ -42,7 +42,7 @@ export type ComposerProps = {
   rightAction?: IconButtonProps;
   disableSend:boolean;
   showTransliteration: boolean;
-  translation: any;
+  translation?: any;
   btnColor:string;
   voiceToText?:any;
   voiceToTextProps?:any;
