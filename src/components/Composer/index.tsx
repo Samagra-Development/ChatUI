@@ -1,4 +1,10 @@
-import React, { useState, useRef, useEffect, useImperativeHandle, useCallback } from 'react';
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useImperativeHandle,
+  useCallback,
+} from 'react';
 import clsx from 'clsx';
 import { IconButtonProps } from '../IconButton';
 import { Recorder, RecorderProps } from '../Recorder';
@@ -11,6 +17,7 @@ import { ComposerInput } from './ComposerInput';
 import { SendButton } from './SendButton';
 import { Action } from './Action';
 import toggleClass from '../../utils/toggleClass';
+import { TransliterationConfig } from '../Chat';
 
 export const CLASS_NAME_FOCUSING = 'S--focusing';
 
@@ -35,6 +42,8 @@ export type ComposerProps = {
   onAccessoryToggle?: (isAccessoryOpen: boolean) => void;
   rightAction?: IconButtonProps;
   disableSend:boolean;
+  showTransliteration: boolean;
+  transliterationConfig:TransliterationConfig | null;
   btnColor:string;
   voiceToText?:any;
   voiceToTextProps?:any;
@@ -59,7 +68,9 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
     onSend,
     voiceToText: VoiceToText,
     voiceToTextProps,
-    disableSend=false,
+    disableSend = false,
+    showTransliteration = true,
+    transliterationConfig = null,
     onImageSend,
     onAccessoryToggle,
     toolbar = [],
@@ -69,7 +80,6 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
     btnColor,
   } = props;
 
-  
   const [text, setText] = useState(initialText);
   const [textOnce, setTextOnce] = useState('');
   const [placeholder, setPlaceholder] = useState(oPlaceholder);
@@ -82,6 +92,7 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
   const popoverTarget = useRef<any>();
   const isMountRef = useRef(false);
   const [isWide, setWide] = useState(false);
+  const [cursorPosition, setCursorPosition] = useState(0);
 
   useEffect(() => {
     const mq =
@@ -208,6 +219,9 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
   const handleTextChange = useCallback(
     (value: string, e: React.ChangeEvent) => {
       setText(value);
+      if (e.target instanceof HTMLTextAreaElement) {
+        setCursorPosition(e.target.selectionStart);
+      }
 
       if (onChange) {
         onChange(value, e);
@@ -285,10 +299,17 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
           </Popover>
         )}
         <div>
-        <div className="Composer-inputWrap" style={{border: `2px solid ${btnColor}`, borderRadius: '12px'}}>
-          <ComposerInput invisible={false} {...inputProps} disabled={disableSend} />
-        </div>
-        <SendButton btnColor={btnColor} onClick={handleSendBtnClick} disabled={!text || disableSend} />
+          <div
+            className="Composer-inputWrap"
+            style={{ border: `2px solid ${btnColor}`, borderRadius: '10px' }}
+          >
+            <ComposerInput invisible={false} {...inputProps} disabled={disableSend} showTransliteration={showTransliteration} transliterationConfig={transliterationConfig} cursorPosition={cursorPosition} setCursorPosition={setCursorPosition}/>
+          </div>
+          <SendButton
+            btnColor={btnColor}
+            onClick={handleSendBtnClick}
+            disabled={!text || disableSend}
+          />
         </div>
       </div>
     );
@@ -296,7 +317,10 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
 
   return (
     <>
-      <div className="Composer">
+      <div
+        className="Composer"
+        style={{ justifyContent: 'center'}}
+      >
         {recorder.canRecord && (
           <Action
             className="Composer-inputTypeBtn"
@@ -306,12 +330,21 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
             aria-label={isInputText ? 'Switch to voice input' : 'Switch to keyboard input'}
           />
         )}
-        <div className="Composer-inputWrap" style={{border: `2px solid ${btnColor}`, borderRadius: '12px'}}>
-      <ComposerInput invisible={!isInputText} {...inputProps} disabled={disableSend} />
+        <div
+          className={`Composer-inputWrap`}
+          style={{
+            border: '2px solid #D0D0D0',
+            flex: 1,
+            borderRadius: '10px',
+          }}
+        >
+          {
+            <ComposerInput invisible={!isInputText} {...inputProps} disabled={disableSend} showTransliteration={showTransliteration} transliterationConfig={transliterationConfig} cursorPosition={cursorPosition} setCursorPosition={setCursorPosition}/>
+          }
           {!isInputText && <Recorder {...recorder} />}
         </div>
         {!text && rightAction && <Action {...rightAction} />}
-       
+
         {!text && VoiceToText ? (
           <div style={{display: 'flex', flexDirection: 'column'}}>
             <div
@@ -324,7 +357,7 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
             </div>
           </div>
         ) : null}
-        
+
         {hasToolbar && (
           <Action
             className={clsx('Composer-toggleBtn', {
@@ -335,7 +368,9 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
             aria-label={isAccessoryOpen ? 'Close Toolbar' : 'Expand Toolbar'}
           />
         )}
-        {(text || textOnce ) && <SendButton btnColor={btnColor} onClick={handleSendBtnClick} disabled={disableSend} />}
+        {(text || textOnce) && (
+          <SendButton btnColor={btnColor} onClick={handleSendBtnClick} disabled={disableSend} />
+        )}
       </div>
       {isAccessoryOpen && (
         <AccessoryWrap onClickOutside={handleAccessoryBlur}>
