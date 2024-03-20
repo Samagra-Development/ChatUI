@@ -5,6 +5,7 @@ import { SendConfirm } from '../SendConfirm';
 import riseInput from './riseInput';
 import parseDataTransfer from '../../utils/parseDataTransfer';
 import canUse from '../../utils/canUse';
+import { TransliterationConfig } from '../Chat';
 
 const canTouch = canUse('touch');
 
@@ -13,6 +14,7 @@ interface ComposerInputProps extends InputProps {
   inputRef: React.MutableRefObject<HTMLTextAreaElement>;
   onImageSend?: (file: File) => Promise<any>;
   showTransliteration: boolean;
+  transliterationConfig: TransliterationConfig | null;
   cursorPosition: number;
   setCursorPosition: any;
 }
@@ -23,6 +25,7 @@ export const ComposerInput = ({
   onImageSend,
   disabled,
   showTransliteration,
+  transliterationConfig,
   value,
   onChange,
   cursorPosition,
@@ -33,10 +36,6 @@ export const ComposerInput = ({
   const [suggestions, setSuggestions] = useState([]);
   const [suggestionClicked, setSuggestionClicked] = useState(false);
   const [activeSuggestion, setActiveSuggestion] = useState<number>(0);
-  const [transliterationConfig, setTransliterationConfig] = useState({
-    auth: '',
-    serviceId: '',
-  });
 
   const handlePaste = useCallback((e: React.ClipboardEvent<any>) => {
     parseDataTransfer(e, setPastedImage);
@@ -66,52 +65,11 @@ export const ComposerInput = ({
       value &&
       //@ts-ignore
       value.length > 0 &&
-      showTransliteration &&
-      process.env.TRANSLITERATION_INFERENCE_PIPELINE_URL &&
-      process.env.TRANSLITERATION_GET_PIPELINE_URL &&
-      process.env.TRANSLITERATION_ULCA_API_KEY &&
-      process.env.TRANSLITERATION_USER_ID
+      showTransliteration && transliterationConfig
     ) {
       if (suggestionClicked) {
         setSuggestionClicked(false);
         return;
-      }
-      if (!sessionStorage.getItem('computeFetched')) {
-        sessionStorage.setItem('computeFetched', 'true');
-        fetch(process.env.TRANSLITERATION_GET_PIPELINE_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            ulcaApiKey: process.env.TRANSLITERATION_ULCA_API_KEY,
-            userID: process.env.TRANSLITERATION_USER_ID,
-          },
-          body: JSON.stringify({
-            pipelineTasks: [
-              {
-                taskType: 'transliteration',
-                config: {
-                  language: {
-                    sourceLanguage: process.env.TRANSLITERATION_SOURCE_LANG,
-                    targetLanguage: process.env.TRANSLITERATION_TARGET_LANG,
-                  },
-                },
-              },
-            ],
-            pipelineRequestConfig: {
-              pipelineId: process.env.TRANSLITERATION_PIPELINE_ID,
-            },
-          }),
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            setTransliterationConfig({
-              serviceId: data?.pipelineResponseConfig?.[0]?.config?.[0]?.serviceId,
-              auth: data?.pipelineInferenceAPIEndPoint?.inferenceApiKey?.value,
-            });
-          })
-          .catch((error) => {
-            console.error('Error fetching models pipeline:', error);
-          });
       }
 
       setSuggestions([]);
@@ -126,40 +84,22 @@ export const ComposerInput = ({
           cursorPosition <= value.indexOf(word) + word.length,
       );
       if (!wordUnderCursor) return;
-      fetch(process.env.TRANSLITERATION_INFERENCE_PIPELINE_URL, {
+      fetch(transliterationConfig.transliterationApi, {
         method: 'POST',
         headers: {
-          Accept: ' */*',
-          Authorization: transliterationConfig.auth,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          pipelineTasks: [
-            {
-              taskType: 'transliteration',
-              config: {
-                language: {
-                  sourceLanguage: process.env.TRANSLITERATION_SOURCE_LANG,
-                  targetLanguage: process.env.TRANSLITERATION_TARGET_LANG,
-                },
-                serviceId: transliterationConfig.serviceId,
-                isSentence: false,
-                numSuggestions: process.env.TRANSLITERATION_NUM_SUGGESTIONS,
-              },
-            },
-          ],
-          inputData: {
-            input: [
-              {
-                source: wordUnderCursor,
-              },
-            ],
-          },
+          "inputLanguage": transliterationConfig.transliterationInputLanguage,
+          "outputLanguage": transliterationConfig.transliterationOutputLanguage,
+          "input": wordUnderCursor,
+          "provider": transliterationConfig?.transliterationProvider || "bhashini",
+          "numSuggestions": transliterationConfig?.transliterationSuggestions || 3
         }),
       })
         .then((response) => response.json())
         .then((data) => {
-          setSuggestions(data?.pipelineResponse?.[0]?.output?.[0]?.target);
+          setSuggestions(data?.suggestions);
         })
         .catch((error) => {
           console.error('Error fetching transliteration:', error);

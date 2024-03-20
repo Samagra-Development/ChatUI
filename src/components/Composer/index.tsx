@@ -17,6 +17,7 @@ import { ComposerInput } from './ComposerInput';
 import { SendButton } from './SendButton';
 import { Action } from './Action';
 import toggleClass from '../../utils/toggleClass';
+import { TransliterationConfig } from '../Chat';
 
 export const CLASS_NAME_FOCUSING = 'S--focusing';
 
@@ -42,6 +43,7 @@ export type ComposerProps = {
   rightAction?: IconButtonProps;
   disableSend:boolean;
   showTransliteration: boolean;
+  transliterationConfig:TransliterationConfig | null;
   btnColor:string;
   voiceToText?:any;
   voiceToTextProps?:any;
@@ -68,6 +70,7 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
     voiceToTextProps,
     disableSend = false,
     showTransliteration = true,
+    transliterationConfig = null,
     onImageSend,
     onAccessoryToggle,
     toolbar = [],
@@ -300,7 +303,7 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
             className="Composer-inputWrap"
             style={{ border: `2px solid ${btnColor}`, borderRadius: '10px' }}
           >
-            <ComposerInput invisible={false} {...inputProps} disabled={disableSend} showTransliteration={showTransliteration} cursorPosition={cursorPosition} setCursorPosition={setCursorPosition}/>
+            <ComposerInput invisible={false} {...inputProps} disabled={disableSend} showTransliteration={showTransliteration} transliterationConfig={transliterationConfig} cursorPosition={cursorPosition} setCursorPosition={setCursorPosition}/>
           </div>
           <SendButton
             btnColor={btnColor}
@@ -336,7 +339,7 @@ export const Composer = React.forwardRef<ComposerHandle, ComposerProps>((props, 
           }}
         >
           {
-            <ComposerInput invisible={!isInputText} {...inputProps} disabled={disableSend} showTransliteration={showTransliteration} cursorPosition={cursorPosition} setCursorPosition={setCursorPosition}/>
+            <ComposerInput invisible={!isInputText} {...inputProps} disabled={disableSend} showTransliteration={showTransliteration} transliterationConfig={transliterationConfig} cursorPosition={cursorPosition} setCursorPosition={setCursorPosition}/>
           }
           {!isInputText && <Recorder {...recorder} />}
         </div>

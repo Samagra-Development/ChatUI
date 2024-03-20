@@ -10,6 +10,14 @@ import { QuickReplies, QuickReplyItemProps } from '../QuickReplies';
 import { Composer as DComposer, ComposerProps, ComposerHandle } from '../Composer';
 import { isSafari, getIOSMajorVersion } from '../../utils/ua';
 
+export type TransliterationConfig = {
+  transliterationApi:string;
+  transliterationSuggestions?:number;
+  transliterationInputLanguage:string;
+  transliterationOutputLanguage:string;
+  transliterationProvider?:string;
+}
+
 export type ChatProps = Omit<ComposerProps, 'onFocus' | 'onChange' | 'onBlur'> &
   MessageContainerProps & {
     /**
@@ -146,6 +154,7 @@ export type ChatProps = Omit<ComposerProps, 'onFocus' | 'onChange' | 'onBlur'> &
     btnColor?:string
     background?:string
     showTransliteration?:boolean
+    transliterationConfig?:TransliterationConfig
   };
 
 export const Chat = React.forwardRef<HTMLDivElement, ChatProps>((props, ref) => {
@@ -180,6 +189,7 @@ export const Chat = React.forwardRef<HTMLDivElement, ChatProps>((props, ref) => 
     onSend,
     disableSend,
     showTransliteration,
+    transliterationConfig,
     btnColor,
     background,
     onImageSend,
@@ -265,6 +275,7 @@ export const Chat = React.forwardRef<HTMLDivElement, ChatProps>((props, ref) => 
             onSend={onSend}
             disableSend={disableSend}
             showTransliteration={showTransliteration}
+            transliterationConfig={transliterationConfig}
             btnColor={btnColor}
             onImageSend={onImageSend}
             rightAction={rightAction}
